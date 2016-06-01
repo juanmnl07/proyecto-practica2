@@ -4,32 +4,17 @@
     <title>Proyecto Práctica 2 - Primer entrega</title>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="/resource/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script type="text/javascript" src="/resource/scripts.js"></script>
   </head>
   <body>
-    <svg class="chart" width="420" height="150" aria-labelledby="title desc" role="img">
-      <title id="title">A bar chart showing information</title>
-      <desc id="desc">4 apples; 8 bananas; 15 kiwis; 16 oranges; 23 lemons</desc>
-      <g class="bar">
-        <rect width="40" height="19"></rect>
-        <text x="45" y="9.5" dy=".35em">4 apples</text>
-      </g>
-      <g class="bar">
-        <rect width="80" height="19" y="20"></rect>
-        <text x="85" y="28" dy=".35em">8 bananas</text>
-      </g>
-      <g class="bar">
-        <rect width="150" height="19" y="40"></rect>
-        <text x="150" y="48" dy=".35em">15 kiwis</text>
-      </g>
-      <g class="bar">
-        <rect width="160" height="19" y="60"></rect>
-        <text x="161" y="68" dy=".35em">16 oranges</text>
-      </g>
-      <g class="bar">
-        <rect width="230" height="19" y="80"></rect>
-        <text x="235" y="88" dy=".35em">23 lemons</text>
-      </g>
+    <svg height="200" width="400">
+      <circle id="first" cx="60" cy="55" r="40" stroke="black" stroke-width="3" fill="red" />
+      <text id="first-label" dx="40" dy="55"></text>
+      <circle id="second" cx="160" cy="55" r="40" stroke="black" stroke-width="3" fill="red" />
+      <text id="second-label" dx="145" dy="55"></text>
+      <circle id="third" cx="260" cy="55" r="40" stroke="black" stroke-width="3" fill="red" />
+      <text id="third-label" dx="240" dy="55"></text>
     </svg>
   </body>
 </html>
