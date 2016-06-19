@@ -1,35 +1,59 @@
-<!DOCTYPE html>
 <html>
-  <head>
-    <title>Proyecto Práctica 2 - Primer entrega</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="/resource/style.css">
-    <script type="text/javascript" src="/resource/scripts.js"></script>
-  </head>
-  <body>
-    <svg class="chart" width="420" height="150" aria-labelledby="title desc" role="img">
-      <title id="title">A bar chart showing information</title>
-      <desc id="desc">4 apples; 8 bananas; 15 kiwis; 16 oranges; 23 lemons</desc>
-      <g class="bar">
-        <rect width="40" height="19"></rect>
-        <text x="45" y="9.5" dy=".35em">4 apples</text>
-      </g>
-      <g class="bar">
-        <rect width="80" height="19" y="20"></rect>
-        <text x="85" y="28" dy=".35em">8 bananas</text>
-      </g>
-      <g class="bar">
-        <rect width="150" height="19" y="40"></rect>
-        <text x="150" y="48" dy=".35em">15 kiwis</text>
-      </g>
-      <g class="bar">
-        <rect width="160" height="19" y="60"></rect>
-        <text x="161" y="68" dy=".35em">16 oranges</text>
-      </g>
-      <g class="bar">
-        <rect width="230" height="19" y="80"></rect>
-        <text x="235" y="88" dy=".35em">23 lemons</text>
-      </g>
-    </svg>
-  </body>
+<head>
+	<meta charset="UTF-8">
+	<title>Proyecto Práctica 2 - Primer entrega</title>
+	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+</head>
+<body>
+
+	<form id="represent-value">
+      <h2 id="value">How do you want to represent values?</h2>
+
+      <h3>Salary:</h3>
+      <input type="radio" name="salary" value="size" id="salarySize">
+      <label for="size">Size</label>
+
+      <input type="radio" name="salary" value="label" id="salaryLabel">
+      <label for="size">Label</label>
+
+      <h3>Age:</h3>
+      <input type="radio" name="age" value="size" id="ageSize">
+      <label for="size">Size</label>
+
+      <input type="radio" name="age" value="label" id="ageLabel">
+      <label for="size">Label</label>
+
+      <h3>Sex:</h3>
+      <input type="radio" name="sex" value="border">
+      <label for="size">Border</label>
+
+      <input type="radio" name="sex" value="font-color">
+      <label for="size">Font Color</label>
+
+      <h3>Name:</h3>
+      <input type="radio" name="name" value="label" checked="checked">
+      <label for="name">Name</label>
+
+      <button id="send">Send</button>
+    </form>
+	
+	<div class="container">
+		<div id="first">
+			<h3 id="first-label"></h3>
+		</div>
+
+		<div id="second">
+			<h3 id="second-label"></h3>
+		</div>
+
+		<div id="third">
+			<h3 id="third-label"></h3>
+		</div>
+	</div>
+
+	
+
+    <script src="/assets/js/jquery.js"></script>
+    <script type="text/javascript" src="/assets/js/main.js"></script>
+</body>
 </html>

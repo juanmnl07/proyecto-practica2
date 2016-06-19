@@ -1,0 +1,3 @@
+Name:Ricardo,Sex:male,Age:60,Salary:3000,Circle:first
+Name:Maria,Sex:female,Age:38,Salary:3000,Circle:second
+Name:Juan,Sex:male,Age:24,Salary:5000,Circle:third

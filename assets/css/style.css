@@ -1,0 +1,38 @@
+ody {
+	font-family: sans-serif;
+}
+
+.container {
+	padding: 30px;
+	opacity: 0;
+}
+
+.container div {
+	width: 150px;
+	height: 150px;
+	padding: 20px;
+	border-radius: 150px;
+	background-color: #FF6E00;
+	float: left;
+	margin-right: 30px;
+	margin-bottom: 50px;
+	color: white;
+	text-align: center;
+	line-height: 75px;
+	font-size: 20px;
+}
+
+#represent-value {
+	display: inline-block;
+	clear: left;
+	margin-left: 30px;
+	padding: 20px;
+	border-radius: 7px;
+	background-color: #248;
+	color: #fff;
+}
+
+#send {
+	display: block;
+	margin-top: 20px;
+}
