@@ -1,3 +1,1 @@
-Name:Ricardo,Sex:male,Age:60,Salary:3000,Circle:first
-Name:Maria,Sex:female,Age:38,Salary:3000,Circle:second
-Name:Juan,Sex:male,Age:24,Salary:5000,Circle:third
+{"personas":[{"nombre":"Ricardo", "genero":"Hombre", "edad":65, "salario":3000},{"nombre":"Anna", "genero":"Mujer", "edad":38, "salario":65000},{"nombre":"Peter", "genero":"Hombre", "edad":25, "salario":3000}]}

@@ -22,17 +22,25 @@ ody {
 	font-size: 20px;
 }
 
-#represent-value {
+#represent-value, #represent-variables {
 	display: inline-block;
 	clear: left;
 	margin-left: 30px;
 	padding: 20px;
-	border-radius: 7px;
+	border-radius: 7px;	
 	background-color: #248;
 	color: #fff;
+}
+
+#represent-variables {
+	float: right;
+	margin-right: 30px;
 }
 
 #send {
 	display: block;
 	margin-top: 20px;
 }
+
+/***** By Juan *****/
+.values{width: 100%; float: left;}
