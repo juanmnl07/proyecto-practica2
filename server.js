@@ -4,8 +4,11 @@ var url = require('url');
 var lineByLineReader = require('line-by-line');
 var lr = new lineByLineReader('data.txt');
 var lr2 = new lineByLineReader('variables.js');
+var lr3 = new lineByLineReader('asociations.txt');
 var dataArr = []; //JSON DATA
 var dataArr2 = []; //VARIABLES
+//var dataArr3 = []; //ASOCIATIONS
+var varPosition = 0; //posicion de la variable en el javascript main.js
 
 	//data json
 	lr.on('error', function(err){
@@ -31,17 +34,42 @@ var dataArr2 = []; //VARIABLES
 	});
 
 	lr2.on('line', function(line){
-		var data = line.split('=');
-		var variable = data[0].split(' ');
-		var dataObj = {};
-		dataObj[variable[1]] = variable[1];
-		dataArr2.push(dataObj);
+		var variable = line.indexOf("var");
+		if(variable != -1){ //verificar si en la linea existe la palabra variable
+			var atr = line.indexOf("atr_"); //verificar si en la declaracion de la variable existe un prefijo atr_
+			if(atr != -1){
+				var data = line.split('=');
+				var variable = data[0].split(' ');
+				var dataObj = {};
+				dataObj["var_"+varPosition] = variable[1];
+				dataArr2.push(dataObj);
+				varPosition++;	
+			}			
+		}
 	});
 
 	lr2.on('end', function(){
 		console.log('********** VARIABLES **********');
 		console.log(dataArr2);
 	});
+
+	//data variables
+	/*lr3.on('error', function(err){
+		console.log('file does not exist');
+	});
+
+	lr3.on('line', function(line){
+		var jsonAsociaciones = JSON.parse(line);
+		var dataObj = {};
+		for (var i = jsonAsociaciones.asociations.length - 1; i >= 0; i--) {
+			dataArr3.push(dataObj[i] = JSON.stringify(jsonAsociaciones.asociations[i]));
+		};
+	});
+
+	lr3.on('end', function(){
+		console.log('********** ASOCIATIONS **********');
+		console.log(dataArr3);
+	});*/
 
 var router = {
 	//assets requests
@@ -67,6 +95,11 @@ var router = {
 		res.writeHead(200, {"Content-Type": "text/plain"});
 		res.end(JSON.stringify({"data" : dataArr2}));
 	},
+	/*//ajax requests
+	"/get-asociations" : function(req, res){
+		res.writeHead(200, {"Content-Type": "text/plain"});
+		res.end(JSON.stringify({"data" : dataArr3}));
+	},*/
 	//page requests
 	"/" : function(req, res){
 		res.writeHead(200, { 'Content-Type': 'text/html' });  

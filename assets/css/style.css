@@ -1,5 +1,6 @@
-ody {
-	font-family: sans-serif;
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic);
+body {
+	font-family: 'Open Sans', sans-serif;
 }
 
 .container {
@@ -22,14 +23,30 @@ ody {
 	font-size: 20px;
 }
 
-#represent-value, #represent-variables {
+#represent-value {
+	margin-right: 25px;
+}
+
+#represent-variables{
+	float: right;
+}
+
+#represent-value, #represent-variables, #represent-asoc {
 	display: inline-block;
-	clear: left;
-	margin-left: 30px;
 	padding: 20px;
 	border-radius: 7px;	
-	background-color: #248;
+	background-color: #39E;
 	color: #fff;
+	width: 44%;
+}
+
+#represent-value, #represent-variables {
+	min-height: 300px;
+}
+
+#main #represent-asoc {
+	width:96%; 
+	margin-top: 35px;}
 }
 
 #represent-variables {
@@ -44,3 +61,5 @@ ody {
 
 /***** By Juan *****/
 .values{width: 100%; float: left;}
+#main {width: 1000px; margin: 0 auto;}
+.selected {color: #248; font-weight: 700;}
