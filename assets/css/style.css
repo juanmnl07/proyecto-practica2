@@ -31,7 +31,7 @@ body {
 	float: right;
 }
 
-#represent-value, #represent-variables, #represent-asoc {
+#represent-value, #represent-variables, #represent-graph {
 	display: inline-block;
 	padding: 20px;
 	border-radius: 7px;	
@@ -44,7 +44,7 @@ body {
 	min-height: 300px;
 }
 
-#main #represent-asoc {
+#main #represent-graph {
 	width:96%; 
 	margin-top: 35px;}
 }
