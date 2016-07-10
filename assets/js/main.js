@@ -1,13 +1,14 @@
 (function($){
 
-	//GLOBALS
+	//****** GLOBALS ******
 	var asociaciones = {"asociaciones":[{}]};
 	var globalData = [];
-	var circle = '';
-	var label = '<text dx="40" dy="55">';
+
+	//etiquieta svg
 	var svg1 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 	svg1.setAttribute("height",200);
 	svg1.setAttribute("width",1000);
+	//****** END GLOBALS ******
 
 	$(document).ready(function(){
 		//evento clic en el label tabla 1
@@ -145,7 +146,6 @@
 						});
 					})
 				});
-				console.log(arrayObjeto);
 				set_data(arrayObjeto);
 			}
 		}
@@ -157,7 +157,7 @@
 				$.each(data_circle[i], function(k, v){
 					circles.setAttribute(k,v);
 					if(k == 'fill'){
-						var color = 'pink';
+						var color = '#F5A9F2';
 						if(v == 'Hombre'){
 							color = 'blue';
 						}
