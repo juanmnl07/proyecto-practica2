@@ -4,10 +4,6 @@
 	var asociaciones = {"asociaciones":[{}]};
 	var globalData = [];
 
-	//etiquieta svg
-	var svg1 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-	svg1.setAttribute("height",200);
-	svg1.setAttribute("width",1000);
 	//****** END GLOBALS ******
 
 	$(document).ready(function(){
@@ -55,7 +51,7 @@
 					//incluir el archivo que se encarga de dibujar circulos
 					//recorrer la estructura de asociaciones para imprimirlos en pantalla
 					//remover graficos
-					removeCircles();
+					limpiarCanvas();
 					printGraphAndAssociations();
 				}
 			}
@@ -119,56 +115,29 @@
 			});
 		}
 
-		function removeCircles(){
-			$('#graficos svg').remove();
-		}
+		
 
 		function printGraphAndAssociations(){
-			$('#graficos').append(svg1);
 			var total_x = 0;
 			for (var i = 0; i < globalData.length; i++) {
-				var arrayObjeto = [];
 				jsonObject = JSON.parse(globalData[i], function(k, v){
 					$.each(asociaciones, function(k2, v2){
 						$.each(v2, function(k3, v3){
 							$.each(v3, function(k4, v4){
-								var values = {};
 								if(k == k4){
 									var atr = v4.replace("atr_","");
-									values[atr] = v;
 									if(atr == 'r'){
 										total_x += v;
-										values['cx'] = (total_x * 2) + 10;
+										setAtr_cx((total_x * 2) + 10);
+										setAtr_r(v);
 									}
-									arrayObjeto.push(values);
 								}
 							});
 						});
 					})
 				});
-				set_data(arrayObjeto);
+				draw();
 			}
-		}
-
-		//Inicializar las variables globales
-		function set_data(data_circle){
-			var circles = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-			for (var i = 0; i < data_circle.length; i++) {
-				$.each(data_circle[i], function(k, v){
-					circles.setAttribute(k,v);
-					if(k == 'fill'){
-						var color = '#F5A9F2';
-						if(v == 'Hombre'){
-							color = 'blue';
-						}
-						circles.setAttribute(k,color);
-					}
-					circles.setAttribute("cy",100); 
-					circles.setAttribute('stroke-width',3);
-
-				});
-			};
-			svg1.appendChild(circles);
 		}
 	})
 })(jQuery);
