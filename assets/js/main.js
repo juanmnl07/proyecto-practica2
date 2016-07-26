@@ -3,6 +3,8 @@
 	//****** GLOBALS ******
 	var asociaciones = {"asociaciones":[{}]};
 	var globalData = [];
+	var colores = [{'hombre':'#2E9AFE'},{'mujer':'#F781F3'}];
+	var coloresStroke = [{'hombre':'#0040FF'},{'mujer':'#FF00FF'}];
 
 	//****** END GLOBALS ******
 
@@ -32,22 +34,23 @@
 					var valSelected = $(this).text();//guardar el valor value en una variable
 					//consultar el archivo de las asociaciones y verificar uno por uno si ya existe el par
 					//leer la estructura "asociaciones"
-					var encontrado = false;
 					$.each(asociaciones, function(k, v){
 						$.each(v, function(k2, v2){
 							$.each(v2, function(k3, v3){
-								if((keySelected == k3) && (valSelected == v3)){ //si no se encuentra se almacena en una estructura
-									encontrado = true;
+								if(valSelected === v3){ //si no se encuentra se almacena en una estructura
+									asociaciones[k].splice(k2, 1);//si se encuentra el valor se elimina para actualzar la asignacion
 								}
 							});	
 						});
 					});
 
+					console.log(asociaciones);
+
 					var asociacion = {};
-					if(encontrado == false){
-						asociacion[keySelected] = valSelected;
-						asociaciones.asociaciones.push(asociacion);//almacenar el nuevo valor en la estructura
-					}
+					asociacion[keySelected] = valSelected;
+					asociaciones.asociaciones.push(asociacion);//almacenar el nuevo valor en la estructura
+
+					//console.log(asociaciones);
 					//incluir el archivo que se encarga de dibujar circulos
 					//recorrer la estructura de asociaciones para imprimirlos en pantalla
 					//remover graficos
@@ -98,6 +101,7 @@
 			}
 		});
 
+		//funcion para verificar si existe un elemento en un arreglo
 		function findInArray(keys, k){
 			var encontrado = false;
 		    for (var i = keys.length - 1; i >= 0; i--) {
@@ -108,6 +112,7 @@
 		    return encontrado;	
 		}
 
+		//funcion para borrar la clase 'selected' en las etiquetas
 		function removeSelected(tabla){
 			$(tabla + ' div').each(function(index){
 				var label = $(this).find('label');
@@ -126,16 +131,42 @@
 							$.each(v3, function(k4, v4){
 								if(k == k4){
 									var atr = v4.replace("atr_","");
-									if(atr == 'r'){
-										total_x += v;
-										setAtr_cx((total_x * 2) + 10);
-										setAtr_r(v);
+
+									switch(atr){
+										case 'r': //radio y la posicion X
+											total_x += v;
+											setAtr_cx((total_x * 2) + 10);
+											setAtr_r(v);
+											break;
+										case 'fill': //fill
+											var color = '';
+											$.each(colores, function(k5, v5){
+												$.each(v5, function(k6, v6){
+													color = v.toLowerCase();
+													if(k6 == color){
+														setAtr_fill(v6);
+													}
+												});
+											});
+											break;
+										case 'stroke':
+											$.each(coloresStroke, function(k5, v5){
+												$.each(v5, function(k6, v6){
+													color = v.toLowerCase();
+													if(k6 == color){
+														setAtr_stroke(v6);
+													}
+												});
+											});
+											break;
+										default:
 									}
 								}
 							});
 						});
 					})
 				});
+				setAtr_id(i);
 				draw();
 			}
 		}
