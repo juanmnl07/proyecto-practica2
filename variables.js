@@ -40,19 +40,20 @@ function limpiarCanvas(){
 	jQuery('#graficos').append(svg);
 }
 
-function draw(){
-	var encontrado = false;
+function drawCircle(){
+	var circle_encontrado = false;
 	//manipular el canvas para verificar si ya se han generado los circulos por medio del identificador
 	for (var i = 0; i < svg.children.length; i++) {
 		if(svg.children[i].id == 'circle-' + id){
-			var encontrado = true;
+			var circle_encontrado = true;
 			svg.children[i].setAttribute("r", atr_r);
 			svg.children[i].setAttribute("cx", atr_cx);
 			svg.children[i].setAttribute("fill", atr_fill);
 			svg.children[i].setAttribute("stroke", atr_stroke);
 		}
 	}
-	if(encontrado == false){
+
+	if(circle_encontrado == false){
 		var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
 		circle.setAttribute("cy",100); 
 		circle.setAttribute("cx", atr_cx);
@@ -61,6 +62,31 @@ function draw(){
 		circle.setAttribute("id", 'circle-' + id);
 		circle.setAttribute("fill", atr_fill);
 		circle.setAttribute("stroke", atr_stroke);
-		svg.appendChild(circle);
-	}	
+		svg.appendChild(circle);	
+	}		
+}
+
+function setText()
+{
+	var text_encontrado = false;
+	//manipular el canvas para verificar si ya se han generado los circulos por medio del identificador
+	for (var i = 0; i < svg.children.length; i++) {
+		if(svg.children[i].id == 'text-' + id){
+			var text_encontrado = true;
+			svg.children[i].textContent = atr_label;
+		}
+	}
+
+	if(text_encontrado == false){
+		var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+		text.setAttribute("y",100); 
+		text.setAttribute("x", atr_cx);
+		text.setAttribute('font-family','sans-serif');
+		text.setAttribute("font-size", 20);
+		text.setAttribute("id", 'text-' + id);
+		text.setAttribute("text-achor", 'middle');
+		text.setAttribute("fill", 'black');
+		text.textContent = atr_label;
+		svg.appendChild(text);
+	}
 }

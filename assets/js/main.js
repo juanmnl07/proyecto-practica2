@@ -159,6 +159,10 @@
 												});
 											});
 											break;
+										case 'label':
+											setAtr_label(v);
+											setText();
+											break;
 										default:
 									}
 								}
@@ -167,7 +171,7 @@
 					})
 				});
 				setAtr_id(i);
-				draw();
+				drawCircle();
 			}
 		}
 	})
