@@ -34,22 +34,24 @@
 					var valSelected = $(this).text();//guardar el valor value en una variable
 					//consultar el archivo de las asociaciones y verificar uno por uno si ya existe el par
 					//leer la estructura "asociaciones"
+					var encontrado = false;
 					$.each(asociaciones, function(k, v){
 						$.each(v, function(k2, v2){
 							$.each(v2, function(k3, v3){
 								if(valSelected === v3){ //si no se encuentra se almacena en una estructura
-									asociaciones[k].splice(k2, 1);//si se encuentra el valor se elimina para actualzar la asignacion
+									//asociaciones[k].splice(k2, 1);//si se encuentra el valor se elimina para actualzar la asignacion
+									asociaciones[k][k2] = {keySelected: valSelected};
 								}
 							});	
 						});
 					});
 
 					console.log(asociaciones);
-
-					var asociacion = {};
-					asociacion[keySelected] = valSelected;
-					asociaciones.asociaciones.push(asociacion);//almacenar el nuevo valor en la estructura
-
+					if (encontrado == false){
+						var asociacion = {};
+						asociacion[keySelected] = valSelected;
+						asociaciones.asociaciones.push(asociacion);//almacenar el nuevo valor en la estructura
+					}
 					//console.log(asociaciones);
 					//incluir el archivo que se encarga de dibujar circulos
 					//recorrer la estructura de asociaciones para imprimirlos en pantalla
