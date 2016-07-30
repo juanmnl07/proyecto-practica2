@@ -34,6 +34,23 @@
 					var valSelected = $(this).text();//guardar el valor value en una variable
 					//consultar el archivo de las asociaciones y verificar uno por uno si ya existe el par
 					//leer la estructura "asociaciones"
+
+
+
+
+					var disallowed = {
+						"nombre"   : [ "atr_r", "atr_fill", "atr_stroke" ]
+						,"genero"  : [ "atr_r" ]
+						,"edad"    : [ "atr_fill", "atr_stroke" ]
+						,"salario" : [ "atr_fill", "atr_stroke" ]
+					};
+
+					if ( -1 != $.inArray(valSelected, disallowed[keySelected] ) )
+						window.alert( "Usted no puede representar " + keySelected + " como " + valSelected );
+
+
+
+
 					var encontrado = false;
 					$.each(asociaciones, function(k, v){
 						$.each(v, function(k2, v2){
