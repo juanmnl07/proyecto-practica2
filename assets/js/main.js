@@ -11,6 +11,7 @@
 	$(document).ready(function(){
 		//evento clic en el label tabla 1
 		$("body").on('click', '#represent-value .key', function(){
+                        console.log('key click!');
 			if($(this).hasClass("selected")){
 				$(this).removeClass("selected");
 			} else {
@@ -46,7 +47,7 @@
 					};
 
 					if ( -1 != $.inArray(valSelected, disallowed[keySelected] ) )
-						window.alert( "Usted no puede representar " + keySelected + " como " + valSelected );
+						window.alert( "You can't represent " + keySelected + " as " + valSelected );
 
 
 
