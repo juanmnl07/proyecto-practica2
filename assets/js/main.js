@@ -11,6 +11,7 @@
 	$(document).ready(function(){
 		//evento clic en el label tabla 1
 		$("body").on('click', '#represent-value .key', function(){
+                        console.log('key click!');
 			if($(this).hasClass("selected")){
 				$(this).removeClass("selected");
 			} else {
@@ -41,17 +42,9 @@
 						,"edad"    : [ "atr_fill", "atr_stroke" ]
 						,"salario" : [ "atr_fill", "atr_stroke" ]
 					};
+					if ( -1 != $.inArray(valSelected, disallowed[keySelected] ) )
+						window.alert( "You can't represent " + keySelected + " as " + valSelected );
 
-					if ( -1 != $.inArray(valSelected, disallowed[keySelected] ) ){
-						window.alert( "Usted no puede representar " + keySelected + " como " + valSelected );
-						/*removeSelected('#represent-value');
-						removeSelected('#represent-variables');//remover selecciones previas*/
-					}
-
-
-
-
-					var encontrado = false;
 					$.each(asociaciones, function(k, v){
 						$.each(v, function(k2, v2){
 							$.each(v2, function(k3, v3){
@@ -62,13 +55,10 @@
 							});	
 						});
 					});
-
-					console.log(asociaciones);
-					if (encontrado == false){
-						var asociacion = {};
-						asociacion[keySelected] = valSelected;
-						asociaciones.asociaciones.push(asociacion);//almacenar el nuevo valor en la estructura
-					}
+					
+					var asociacion = {};
+					asociacion[keySelected] = valSelected;
+					asociaciones.asociaciones.push(asociacion);//almacenar el nuevo valor en la estructura
 					//console.log(asociaciones);
 					//incluir el archivo que se encarga de dibujar circulos
 					//recorrer la estructura de asociaciones para imprimirlos en pantalla

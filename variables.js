@@ -4,36 +4,32 @@ svg.setAttribute("height",200);
 svg.setAttribute("width",1000);
 
 //variables atributos
-var atr_d = '';
+/*
+var atr_r = '';
 var atr_fill = '';
 var atr_label = '';
 var atr_stroke = '';
+*/
 var id = '';
-
-//funciones set para cada atributo
-function setAtr_r(val){
-	atr_r = val;
-}
-
-function setAtr_fill(val){
-	atr_fill = val;
-}
-
-function setAtr_label(val){
-	atr_label = val;
-}
-
-function setAtr_stroke(val){
-	atr_stroke = val;
-}
-
-function setAtr_cx(val){
-	atr_cx = val;
-}
 
 function setAtr_id(val){
 	id = val;
 }
+
+function addProperties() {
+	var dynamicCode = '';
+	for ( var j=0; j < arguments.length; j++ ) {
+		var propName = arguments[j];
+		dynamicCode += "var"
+		+ " atr_" + propName + "= '';"
+		+ "function setAtr_" + propName + "(val) {"
+		+ "atr_" + propName + "= val; }"
+		;
+	}
+	return dynamicCode;
+}
+
+eval(addProperties('r','fill','label','stroke','cx'));
 
 function limpiarCanvas(){
 	/*jQuery('#graficos').remove();*/
