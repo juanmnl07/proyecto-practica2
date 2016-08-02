@@ -4,7 +4,7 @@ svg.setAttribute("height",200);
 svg.setAttribute("width",1000);
 
 //variables atributos
-var atr_r = '';
+var atr_d = '';
 var atr_fill = '';
 var atr_label = '';
 var atr_stroke = '';

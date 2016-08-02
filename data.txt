@@ -1,1 +1,1 @@
-{"personas":[{"nombre":"Ricardo", "genero":"Hombre", "edad":65, "salario":3000},{"nombre":"Anna", "genero":"Mujer", "edad":38, "salario":65000},{"nombre":"Peter", "genero":"Hombre", "edad":25, "salario":3000}]}
+{"personas":[{"nombr":"Ricardo", "genero":"Hombre", "edad":65, "salario":3000},{"nombr":"Anna", "genero":"Mujer", "edad":38, "salario":65000},{"nombr":"Peter", "genero":"Hombre", "edad":25, "salario":3000}]}
