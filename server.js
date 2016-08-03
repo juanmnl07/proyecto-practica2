@@ -53,9 +53,13 @@ var varPosition = 0; //posicion de la variable en el javascript main.js
 
 var router = {
 	//assets requests
-	"/assets/css/style.css" : function(req, res){
+	"/assets/css/bootstrap.css" : function(req, res){
 		res.writeHead(200, {"Content-Type" : "text/css"});
-		res.end(fs.readFileSync('./assets/css/style.css'));
+		res.end(fs.readFileSync('./assets/css/bootstrap.css'));
+	},
+	"/assets/js/bootstrap.js" : function(req, res){
+		res.writeHead(200, {"Content-Type" : "text/javascript"});
+		res.end(fs.readFileSync('./assets/js/bootstrap.js'));
 	},
 	"/assets/js/main.js" : function(req, res){
 		res.writeHead(200, {"Content-Type" : "text/javascript"});

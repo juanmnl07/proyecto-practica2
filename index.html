@@ -2,26 +2,71 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Proyecto Práctica 2 - Primer entrega</title>
-	<link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+	<!-- Bootstrap -->
+  <link href="/assets/css/bootstrap.css" rel="stylesheet">
 </head>
 <body>
-
 <div id="main">
-	<div id="represent-value">
-    <h2 id="value">¿Cómo deseas representar los valores?</h2>
+  <div id="messages"></div>
+  <div class="row">
+
+  	<div class="col-md-4">
+      <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">
+          <h2 id="value">Valores</h2>
+        </div>
+        <div class="panel-body list-group" id="represent-value"></div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">
+          <h2 id="variable">Variables</h2>
+        </div>
+        <div class="panel-body list-group" id="represent-variables"></div>
+      </div>
+    </div>
+
+    <div class="col-md-4" id="assoc">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 id="graph">Asociaciones</h2>
+        </div>
+        <div class="panel-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Valor</th>
+                <th>Variable</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <div id="represent-variables">
-    <h2 id="variable">Variables</h2>
-  </div>
+  <div class="row">
+    <div class="col-md-12" id="represent-asoc">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 id="graph">Gráficos</h2>
+        </div>
+        <div class="panel-body" id="graficos"></div>
+      </div>
+    </div>
 
-  <div id="represent-asoc">
-    <h2 id="graph">Gráficos</h2>
-    <div id="graficos"></div>
+    
   </div>
+    
 </div>
-
-    <script src="/assets/js/jquery.js"></script>
+    <script type="text/javascript" src="/assets/js/jquery.js"></script>
+    <script type="text/javascript" src="/assets/js/bootstrap.js"></script>
     <script type="text/javascript" src="variables.js"></script>
     <script type="text/javascript" src="/assets/js/main.js"></script>
 </body>

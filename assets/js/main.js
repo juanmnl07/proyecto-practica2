@@ -11,25 +11,39 @@
 	$(document).ready(function(){
 		//evento clic en el label tabla 1
 		$("body").on('click', '#represent-value .key', function(){
-                        console.log('key click!');
-			if($(this).hasClass("selected")){
-				$(this).removeClass("selected");
+			if($(this).hasClass("active")){
+				//remover asociacion
+				var valor = $(this).text();
+				var variable = obtenerVariable(valor);
+				var answer = confirm("¿Realmente deseas remover la asociacion: " + valor + '-' + variable + "?");
+
+				if(answer){
+					removerAsociacion(valor);
+					//limpiar seleccion
+					$('#'+valor).removeClass('active');
+					$('#'+variable).removeClass('active');
+				}
+				console.log(asociaciones);
+				limpiarCanvas();
+				printGraphAndAssociations();
 			} else {
-				removeSelected('#represent-value');//remover selecciones previas
-				$(this).addClass("selected");
+				//agregar clase active
+				$(this).addClass("active");
+				//remover la ultima seleccion
+				removeLastSelection('#represent-value');
+				//agregar clase last-selected
+				$(this).addClass("last-selected");
 			}
 		});
 
 		//evento clic en el label tabla 2
 		$("body").on('click', '#represent-variables .value', function(){
-			if($(this).hasClass("selected")){
-				$(this).removeClass("selected");
-			} else {
-				removeSelected('#represent-variables');//remover selecciones previas
-				$(this).addClass("selected");
 
+			if($(this).hasClass("active")){
+				$('#messages').append('<div class="alert alert-warning alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>¡Alerta!</strong> Ya has seleccionado el valor: <strong>' + $(this).text() + '</strong> para la asociacion, por favor selecciona otro valor</div>')
+			}else{
 				//validar que se haya seleccionado por lo menos un elemento de la tabla 1
-				var keyElementSelected = $("#represent-value .key.selected");
+				var keyElementSelected = $("#represent-value .key.active.last-selected");
 				if(keyElementSelected.length > 0){
 					var keySelected = keyElementSelected.text();//guardar el valor key en una variable
 					var valSelected = $(this).text();//guardar el valor value en una variable
@@ -42,29 +56,41 @@
 						,"edad"    : [ "atr_fill", "atr_stroke" ]
 						,"salario" : [ "atr_fill", "atr_stroke" ]
 					};
-					if ( -1 != $.inArray(valSelected, disallowed[keySelected] ) )
-						window.alert( "You can't represent " + keySelected + " as " + valSelected );
-
-					$.each(asociaciones, function(k, v){
-						$.each(v, function(k2, v2){
-							$.each(v2, function(k3, v3){
-								if(valSelected === v3){ //si no se encuentra se almacena en una estructura
-									//asociaciones[k].splice(k2, 1);//si se encuentra el valor se elimina para actualzar la asignacion
-									asociaciones[k][k2] = {keySelected: valSelected};
-								}
-							});	
+					if ( -1 != $.inArray(valSelected, disallowed[keySelected] ) ) {
+						$('#messages').append('<div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>¡Alerta!</strong> No puedes representar '  + keySelected + ' as ' + valSelected + ', por favor selecciona otro valor</div>')
+					} else {
+						$(this).addClass("active");
+						$(this).addClass("disabled");
+						$.each(asociaciones, function(k, v){
+							$.each(v, function(k2, v2){
+								$.each(v2, function(k3, v3){
+									if(valSelected === v3){ //si no se encuentra se almacena en una estructura
+										//asociaciones[k].splice(k2, 1);//si se encuentra el valor se elimina para actualzar la asignacion
+										asociaciones[k][k2] = {keySelected: valSelected};
+									}
+								});	
+							});
 						});
-					});
-					
-					var asociacion = {};
-					asociacion[keySelected] = valSelected;
-					asociaciones.asociaciones.push(asociacion);//almacenar el nuevo valor en la estructura
-					//console.log(asociaciones);
-					//incluir el archivo que se encarga de dibujar circulos
-					//recorrer la estructura de asociaciones para imprimirlos en pantalla
-					//remover graficos
-					limpiarCanvas();
-					printGraphAndAssociations();
+						var asociacion = {};
+						asociacion[keySelected] = valSelected;
+						asociaciones.asociaciones.push(asociacion);//almacenar el nuevo valor en la estructura
+
+						$('#assoc table tbody').remove();
+						$('#assoc table').append('<tbody></tbody>');
+						$.each(asociaciones, function(k2, v2){
+							$.each(v2, function(k3, v3){
+								$.each(v3, function(k4, v4){									
+									$('#assoc table tbody').append('<tr><td>' + k4 + '</td><td>' + v4 + '</td></tr>');
+								});
+							});
+						})
+						//console.log(asociaciones);
+						//incluir el archivo que se encarga de dibujar circulos
+						//recorrer la estructura de asociaciones para imprimirlos en pantalla
+						//remover graficos
+						limpiarCanvas();
+						printGraphAndAssociations();
+					}
 				}
 			}
 		});
@@ -90,7 +116,8 @@
 				//representar los 'keys' en la tabla 1
 				for (var i = 0; i < keys.length; i++) {
 					if(keys[i] != ""){
-						$("#represent-value").append("<div id=\"value-" + i + "\" class=\"values\"><label class=\"key\" for=\"" + keys[i] + "\">" + keys[i] + "</label>");
+						$("#represent-value").append('<a href="#" class="list-group-item key" id="' + keys[i] + '">' + keys[i] + '</a>');
+						
 					}
 				};
 			} 
@@ -104,7 +131,7 @@
 				var data = response.data;
 				for (var i = 0; i < data.length; i++) {
 					$.each(data[i], function(k, v) {
-					    $("#represent-variables").append("<div id=\"value-" + i + "\" class=\"values\"><label class=\"value\" for=\"" + v + "\">" + v + "</label>");
+					    $("#represent-variables").append('<a href="#" class="list-group-item value" id="' + v + '">' + v + '</a>');
 					});
 				};
 			}
@@ -122,17 +149,45 @@
 		}
 
 		//funcion para borrar la clase 'selected' en las etiquetas
-		function removeSelected(tabla){
-			$(tabla + ' div').each(function(index){
-				var label = $(this).find('label');
-				$(label).removeClass("selected");
+		function removeLastSelection(tabla){
+			$(tabla + ' a').each(function(){
+				$(this).removeClass("last-selected");
 			});
 		}
 
-		
+		function removerAsociacion(valor){
+			//buscar en el arreglo de las asociaciones el valor seleccionado
+			$.each(asociaciones, function(k, v){
+				$.each(v, function(k2, v2){
+					$.each(v2, function(k3, v3){
+						console.log(k3 + '-' + v3);
+						if(valor === k3){ //si no se encuentra se almacena en una estructura
+							asociaciones[k].splice(k2, 1);
+						}
+					});	
+				});
+			});
+		}
+
+		function obtenerVariable(valor){
+			//buscar en el arreglo de las asociaciones el valor seleccionado
+			var variable;
+			$.each(asociaciones, function(k, v){
+				$.each(v, function(k2, v2){
+					$.each(v2, function(k3, v3){
+						if(valor === k3){ //si no se encuentra se almacena en una estructura
+							variable = v3;
+						}
+					});	
+				});
+			});
+			return variable;
+		}
 
 		function printGraphAndAssociations(){
+			//remover el tbody de la tabla de selecciones
 			var total_x = 0;
+			var label = '';
 			for (var i = 0; i < globalData.length; i++) {
 				jsonObject = JSON.parse(globalData[i], function(k, v){
 					$.each(asociaciones, function(k2, v2){
@@ -140,7 +195,6 @@
 							$.each(v3, function(k4, v4){
 								if(k == k4){
 									var atr = v4.replace("atr_","");
-
 									switch(atr){
 										case 'r': //radio y la posicion X
 											total_x += v;
@@ -170,7 +224,7 @@
 											break;
 										case 'label':
 											setAtr_label(v);
-											setText();
+											label = v;
 											break;
 										default:
 									}
@@ -181,6 +235,8 @@
 				});
 				setAtr_id(i);
 				drawCircle();
+				if(label != '')
+					setText();
 			}
 		}
 	})
