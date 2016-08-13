@@ -1,14 +1,61 @@
 (function($){
 
 	//****** GLOBALS ******
-	var asociaciones = {"asociaciones":[{}]};
-	var globalData = [];
+	var asociaciones = {"asociaciones":[{}]}; //variable global para almacenar las asociaciones
+	var globalData = []; //almacenar en una variable global todos los datos de las personas
+	var atributosCirculos = []; //almacenar los datos que le corresponde a los circulos
 	var colores = [{'hombre':'#2E9AFE'},{'mujer':'#F781F3'}];
 	var coloresStroke = [{'hombre':'#0040FF'},{'mujer':'#FF00FF'}];
 
 	//****** END GLOBALS ******
 
 	$(document).ready(function(){
+
+		//genar las opciones de la taba 'valores'		
+		$.ajax({
+			url : '/get-data',
+			type : 'GET',
+			dataType : 'json',
+			success : function(response){
+				var data = response.data;
+				globalData = data;
+				
+				var keys = [];
+				//representar los keys del json dinamicamente, si se extiende los datos del json, este se mostrara en el cuadro
+				for (var i = data.length - 1; i >= 0; i--) {
+					var key = {};
+					jsonObject = JSON.parse(data[i], function(k, v){
+						if(findInArray(keys, k) == false){
+							var index = keys.length;
+							keys.push(key[index] = k);
+						}
+					})
+				}
+				//representar los 'keys' en la tabla 1
+				for (var i = 0; i < keys.length; i++) {
+					if(keys[i] != ""){
+						$("#represent-value").append('<a href="#" class="list-group-item key" id="' + keys[i] + '">' + keys[i] + '</a>');
+						
+					}
+				};
+			} 
+		});
+
+		//genar las opciones de la taba 'variables'
+		$.ajax({
+			url : '/get-variables',
+			type : 'GET',
+			dataType : 'json',
+			success : function(response){
+				var data = response.data;
+				for (var i = 0; i < data.length; i++) {
+					$.each(data[i], function(k, v) {
+					    $("#represent-variables").append('<a href="#" class="list-group-item value" id="' + v + '">' + v + '</a>');
+					});
+				};
+			}
+		});
+
 		//evento clic en el label tabla 1
 		$("body").on('click', '#represent-value .key', function(){
 			if($(this).hasClass("active")){
@@ -23,8 +70,6 @@
 					$('#'+valor).removeClass('active');
 					$('#'+variable).removeClass('active');
 				}
-				limpiarCanvas();
-				printGraphAndAssociations();
 			} else {
 				//agregar clase active
 				$(this).addClass("active");
@@ -82,65 +127,50 @@
 								});
 							});
 						})
-						//console.log(asociaciones);
-						//incluir el archivo que se encarga de dibujar circulos
-						//recorrer la estructura de asociaciones para imprimirlos en pantalla
-						//remover graficos
 					}
 				}
-			}
-		});
-
-		//genar las opciones de la taba 'valores'		
-		$.ajax({
-			url : '/get-data',
-			type : 'GET',
-			dataType : 'json',
-			success : function(response){
-				var data = response.data;
-				globalData = data;
-				var keys = [];
-				//representar los keys del json dinamicamente, si se extiende los datos del json, este se mostrara en el cuadro
-				for (var i = data.length - 1; i >= 0; i--) {
-					var key = {};
-					jsonObject = JSON.parse(data[i], function(k, v){
-						if(findInArray(keys, k) == false){
-							var index = keys.length;
-							keys.push(key[index] = k);
-						}
-					})
-				}
-				//representar los 'keys' en la tabla 1
-				for (var i = 0; i < keys.length; i++) {
-					if(keys[i] != ""){
-						$("#represent-value").append('<a href="#" class="list-group-item key" id="' + keys[i] + '">' + keys[i] + '</a>');
-						
-					}
-				};
-			} 
-		});
-
-		//genar las opciones de la taba 'valores
-		$.ajax({
-			url : '/get-variables',
-			type : 'GET',
-			dataType : 'json',
-			success : function(response){
-				var data = response.data;
-				for (var i = 0; i < data.length; i++) {
-					$.each(data[i], function(k, v) {
-					    $("#represent-variables").append('<a href="#" class="list-group-item value" id="' + v + '">' + v + '</a>');
-					});
-				};
 			}
 		});
 
 		//dibujar graficos
 		$("#dibujar-graficos").on("click", function(event){
 			event.preventDefault;
-			limpiarCanvas();
-			printGraphAndAssociations();
+			crearDatosCirculos();
+			inicializarDatosCirculos();
+			/*limpiarCanvas();
+			printGraphAndAssociations();*/
 		});
+
+		//funcion para llenar todos los atrributos de los circulos en un array
+		function crearDatosCirculos(){
+			//recorrer asociaciones
+			$.each(asociaciones, function(key, object){
+				$.each(object, function(key, atributo){
+					$.each(atributo, function(valor, variable){
+						//variable temporal para almacenar los datos de cada atributo
+						var attributo = {};
+						var valoresAtributo = [];
+						for (var i = 0; i < globalData.length; i++) {
+							JSON.parse(globalData[i], function(dataValor, v){
+								if(valor == dataValor){
+									if((v == 'Hombre') || (v == 'Mujer')){
+										v = v.toLowerCase();
+										v = obtenerColor(v);
+									}
+									valoresAtributo.push(v);
+								}
+							});
+						}
+						attributo.nombre = variable;
+						attributo.valores = valoresAtributo;
+
+						//agregar los atributos al arreglo de circulos
+						atributosCirculos.push(attributo);
+					})
+				})
+			});
+			inicializarAtributosCirculos(atributosCirculos);
+		}
 
 		//funcion para verificar si existe un elemento en un arreglo
 		function findInArray(keys, k){
@@ -191,7 +221,19 @@
 			return variable;
 		}
 
-		function printGraphAndAssociations(){
+		function obtenerColor(key){
+			var valor = '';
+			$.each(colores, function(k, obj){
+				$.each(obj, function(tipo, cod){
+					if(key == tipo){
+						valor = cod;
+					}
+				});
+			});
+			return valor;
+		}
+
+		/*function printGraphAndAssociations(){
 			//remover el tbody de la tabla de selecciones
 			var total_x = 0;
 			var label = '';
@@ -245,6 +287,6 @@
 				if(label != '')
 					setText();
 			}
-		}
+		}*/
 	})
 })(jQuery);

@@ -3,6 +3,7 @@ var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 svg.setAttribute("height",200);
 svg.setAttribute("width",1000);
 
+/* Global variables */
 //variables atributos
 /*
 var atr_r = '';
@@ -11,12 +12,13 @@ var atr_label = '';
 var atr_stroke = '';
 */
 var id = '';
+var attributosCirculos = [];
 
 function setAtr_id(val){
 	id = val;
 }
 
-function addProperties() {
+/*function addProperties() {
 	var dynamicCode = '';
 	for ( var j=0; j < arguments.length; j++ ) {
 		var propName = arguments[j];
@@ -29,13 +31,60 @@ function addProperties() {
 	return dynamicCode;
 }
 
-eval(addProperties('r','fill','label','stroke','cx'));
+eval(addProperties('r','fill','label','stroke','cx'));*/
 
-function limpiarCanvas(){
+function inicializarAtributosCirculos(circulos){
+	attributosCirculos = circulos;
+}
+
+function writeFunctions() {
+	var dynamicCode = '';
+	for ( var j=0; j < arguments.length; j++ ) {
+		var propName = arguments[j];
+		dynamicCode += "var "
+		+ propName + "= '';"
+		+ " function set_" + propName + "(val) {"
+		+ propName + "= val;}";
+	}
+
+	console.log(dynamicCode);
+
+	return dynamicCode;
+}
+
+function prepareFunctions(){
+	for (var i = 0; i < attributosCirculos.length; i++) {
+		eval(writeFunctions(attributosCirculos[i].nombre));
+	}
+}
+
+function initFunction(){
+	prepareFunctions();
+	/*var dynamicCode = '';
+	for ( var j=0; j < arguments.length; j++ ) {
+		var circulo = arguments[j];
+		//dynamicCode = "set_" + circulo.nombre + "(" + circulo.valores + ");";
+		dynamicCode = "set_" + circulo.nombre + "(test);";
+	}
+	return dynamicCode;*/
+}
+
+function inicializarDatosCirculos()
+{
+	eval(initFunction());
+	/*for (var i = 0; i < attributosCirculos.length; i++) {
+		var atributosCirculo = attributosCirculos[i];
+		eval(initFunction(atributosCirculo));
+	}*/	
+}
+
+function limpiarCanvas()
+{
 	jQuery('#graficos').append(svg);
 }
 
-function drawCircle(){
+/*function drawCircle()
+{
 	var circle_encontrado = false;
 	//manipular el canvas para verificar si ya se han generado los circulos por medio del identificador
 	for (var i = 0; i < svg.children.length; i++) {
@@ -86,4 +135,4 @@ function setText()
 		text.textContent = atr_label;
 		svg.appendChild(text);
 	}
-}
+}*/
