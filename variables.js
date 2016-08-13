@@ -32,7 +32,6 @@ function addProperties() {
 eval(addProperties('r','fill','label','stroke','cx'));
 
 function limpiarCanvas(){
-	/*jQuery('#graficos').remove();*/
 	jQuery('#graficos').append(svg);
 }
 
@@ -40,6 +39,7 @@ function drawCircle(){
 	var circle_encontrado = false;
 	//manipular el canvas para verificar si ya se han generado los circulos por medio del identificador
 	for (var i = 0; i < svg.children.length; i++) {
+		//si es encontrado el identificador dentro de los elementos en el canvas se modifican los atributos
 		if(svg.children[i].id == 'circle-' + id){
 			var circle_encontrado = true;
 			svg.children[i].setAttribute("r", atr_r);
@@ -49,6 +49,7 @@ function drawCircle(){
 		}
 	}
 
+	//si no se encuentran se crea un elemento circulo de svg
 	if(circle_encontrado == false){
 		var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
 		circle.setAttribute("cy",100); 

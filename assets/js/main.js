@@ -23,7 +23,6 @@
 					$('#'+valor).removeClass('active');
 					$('#'+variable).removeClass('active');
 				}
-				console.log(asociaciones);
 				limpiarCanvas();
 				printGraphAndAssociations();
 			} else {
@@ -65,7 +64,6 @@
 							$.each(v, function(k2, v2){
 								$.each(v2, function(k3, v3){
 									if(valSelected === v3){ //si no se encuentra se almacena en una estructura
-										//asociaciones[k].splice(k2, 1);//si se encuentra el valor se elimina para actualzar la asignacion
 										asociaciones[k][k2] = {keySelected: valSelected};
 									}
 								});	
@@ -88,13 +86,12 @@
 						//incluir el archivo que se encarga de dibujar circulos
 						//recorrer la estructura de asociaciones para imprimirlos en pantalla
 						//remover graficos
-						limpiarCanvas();
-						printGraphAndAssociations();
 					}
 				}
 			}
 		});
 
+		//genar las opciones de la taba 'valores'		
 		$.ajax({
 			url : '/get-data',
 			type : 'GET',
@@ -123,6 +120,7 @@
 			} 
 		});
 
+		//genar las opciones de la taba 'valores
 		$.ajax({
 			url : '/get-variables',
 			type : 'GET',
@@ -135,6 +133,13 @@
 					});
 				};
 			}
+		});
+
+		//dibujar graficos
+		$("#dibujar-graficos").on("click", function(event){
+			event.preventDefault;
+			limpiarCanvas();
+			printGraphAndAssociations();
 		});
 
 		//funcion para verificar si existe un elemento en un arreglo
@@ -155,6 +160,7 @@
 			});
 		}
 
+		//buscar en las asociaciones una seleccion a eliminar
 		function removerAsociacion(valor){
 			//buscar en el arreglo de las asociaciones el valor seleccionado
 			$.each(asociaciones, function(k, v){
@@ -169,6 +175,7 @@
 			});
 		}
 
+		//obtener una variable dentro de las asociaciones por medio de valor
 		function obtenerVariable(valor){
 			//buscar en el arreglo de las asociaciones el valor seleccionado
 			var variable;
