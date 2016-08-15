@@ -3,7 +3,6 @@
 	//****** GLOBALS ******
 	var asociaciones = {"asociaciones":[{}]}; //variable global para almacenar las asociaciones
 	var globalData = []; //almacenar en una variable global todos los datos de las personas
-	var atributosCirculos = []; //almacenar los datos que le corresponde a los circulos
 	var colores = [{'hombre':'#2E9AFE'},{'mujer':'#F781F3'}];
 	var coloresStroke = [{'hombre':'#0040FF'},{'mujer':'#FF00FF'}];
 
@@ -136,7 +135,6 @@
 		$("#dibujar-graficos").on("click", function(event){
 			event.preventDefault;
 			crearDatosCirculos();
-			inicializarDatosCirculos();
 			/*limpiarCanvas();
 			printGraphAndAssociations();*/
 		});
@@ -144,32 +142,43 @@
 		//funcion para llenar todos los atrributos de los circulos en un array
 		function crearDatosCirculos(){
 			//recorrer asociaciones
+			var funciones = []; //almacenar los datos que le corresponde a los circulos
 			$.each(asociaciones, function(key, object){
 				$.each(object, function(key, atributo){
 					$.each(atributo, function(valor, variable){
 						//variable temporal para almacenar los datos de cada atributo
-						var attributo = {};
-						var valoresAtributo = [];
-						for (var i = 0; i < globalData.length; i++) {
-							JSON.parse(globalData[i], function(dataValor, v){
-								if(valor == dataValor){
-									if((v == 'Hombre') || (v == 'Mujer')){
-										v = v.toLowerCase();
-										v = obtenerColor(v);
-									}
-									valoresAtributo.push(v);
-								}
-							});
-						}
-						attributo.nombre = variable;
-						attributo.valores = valoresAtributo;
+						var funcion = {};
+						funcion.nombre = variable.replace('atr_','');
 
 						//agregar los atributos al arreglo de circulos
-						atributosCirculos.push(attributo);
+						funciones.push(funcion);
 					})
 				})
 			});
-			inicializarAtributosCirculos(atributosCirculos);
+
+			var personas = [];
+			for (var i = 0; i < globalData.length; i++) {
+				var persona = {};
+				var atrPersona = [];
+				jsonObject = JSON.parse(globalData[i], function(atr, valor){
+					$.each(asociaciones, function(k, asociacion){
+						$.each(asociacion, function(k2, objeto){
+							$.each(objeto, function(k3, variable){
+								if(atr == k3){
+									if((valor == 'Hombre') || (valor == 'Mujer')){
+										valor = obtenerColor(valor.toLowerCase());
+									}
+									atrPersona.push('{"atributo":"' + variable.replace('atr_', '') + '", "valor":"' + valor + '"}');
+								}
+							});
+						});
+					});
+				});
+				persona.id = (i + 1);
+				persona.atributos = atrPersona;
+				personas.push(persona);
+			}
+			inicializarAtributosCirculos(personas, globalData.length, funciones);
 		}
 
 		//funcion para verificar si existe un elemento en un arreglo
@@ -221,6 +230,7 @@
 			return variable;
 		}
 
+		//obtener el codigo de color correspondiente al genero
 		function obtenerColor(key){
 			var valor = '';
 			$.each(colores, function(k, obj){
@@ -233,60 +243,5 @@
 			return valor;
 		}
 
-		/*function printGraphAndAssociations(){
-			//remover el tbody de la tabla de selecciones
-			var total_x = 0;
-			var label = '';
-			for (var i = 0; i < globalData.length; i++) {
-				jsonObject = JSON.parse(globalData[i], function(k, v){
-					$.each(asociaciones, function(k2, v2){
-						$.each(v2, function(k3, v3){
-							$.each(v3, function(k4, v4){
-								if(k == k4){
-									var atr = v4.replace("atr_","");
-									switch(atr){
-										case 'r': //radio y la posicion X
-											total_x += v;
-											setAtr_cx((total_x * 2) + 10);
-											setAtr_r(v);
-											break;
-										case 'fill': //fill
-											var color = '';
-											$.each(colores, function(k5, v5){
-												$.each(v5, function(k6, v6){
-													color = v.toLowerCase();
-													if(k6 == color){
-														setAtr_fill(v6);
-													}
-												});
-											});
-											break;
-										case 'stroke':
-											$.each(coloresStroke, function(k5, v5){
-												$.each(v5, function(k6, v6){
-													color = v.toLowerCase();
-													if(k6 == color){
-														setAtr_stroke(v6);
-													}
-												});
-											});
-											break;
-										case 'label':
-											setAtr_label(v);
-											label = v;
-											break;
-										default:
-									}
-								}
-							});
-						});
-					})
-				});
-				setAtr_id(i);
-				drawCircle();
-				if(label != '')
-					setText();
-			}
-		}*/
 	})
 })(jQuery);

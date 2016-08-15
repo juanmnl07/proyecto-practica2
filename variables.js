@@ -11,128 +11,111 @@ var atr_fill = '';
 var atr_label = '';
 var atr_stroke = '';
 */
-var id = '';
-var attributosCirculos = [];
 
-function setAtr_id(val){
-	id = val;
+var atributosPersonas = [];
+function inicializarAtributosCirculos(personas, cantidadPersonas, funciones){
+	atributosPersonas = personas;
+	initCanvas();
+	initCircles(cantidadPersonas);
+	eval(addFunctions(funciones));
+	eval(initAttributes(atributosPersonas));
+	set_cx();
+	set_label();
 }
 
-/*function addProperties() {
+function initCircles(cantidadPersonas){
+	for (var i = 1; i <= cantidadPersonas; i++) {
+		//******* circulos ******
+		var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+		circle.setAttribute("id", 'circle-' + i);
+		circle.setAttribute("class", 'circle');
+		circle.setAttribute("cy",100);
+		svg.appendChild(circle);
+
+		//******* etiquetas *****
+		var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+		text.setAttribute("y",100); 
+		text.setAttribute('font-family','sans-serif');
+		text.setAttribute("font-size", 20);
+		text.setAttribute("id", 'text-' + i);
+		text.setAttribute("class", 'text');
+		text.setAttribute("text-achor", 'middle');
+		text.setAttribute("fill", 'black');
+		svg.appendChild(text);
+	}
+}
+
+function addFunctions() {
 	var dynamicCode = '';
+	var object = {};
 	for ( var j=0; j < arguments.length; j++ ) {
-		var propName = arguments[j];
-		dynamicCode += "var"
-		+ " atr_" + propName + "= '';"
-		+ "function setAtr_" + propName + "(val) {"
-		+ "atr_" + propName + "= val; }"
-		;
+		var objects = arguments[j];
+		for ( var i=0; i < objects.length; i++ ) {
+			object = objects[i];
+			var propName = object.nombre;
+			dynamicCode += "function setAtr_" + propName + "(val) {"
+			+ "atr_" + propName + "= val; }"
+			;
+		}
 	}
 	return dynamicCode;
 }
 
-eval(addProperties('r','fill','label','stroke','cx'));*/
-
-function inicializarAtributosCirculos(circulos){
-	attributosCirculos = circulos;
-}
-
-function writeFunctions() {
+function initAttributes() {
 	var dynamicCode = '';
+	var object = {};
 	for ( var j=0; j < arguments.length; j++ ) {
-		var propName = arguments[j];
-		dynamicCode += "var "
-		+ propName + "= '';"
-		+ " function set_" + propName + "(val) {"
-		+ propName + "= val;}";
+		var objects = arguments[j];
+		for ( var k=0; k < objects.length; k++ ) {
+			object = objects[k];
+			for (var i = 0; i < object.atributos.length; i++) {
+				var atributos = object.atributos[i];
+				atributos = JSON.parse(atributos);
+				dynamicCode += "setAtr_" + atributos.atributo + "('" + atributos.valor + "'); "
+				+ "svg.children[id='circle-" + object.id + "'].setAttribute('" + atributos.atributo + "', " + 'atr_' + atributos.atributo + "); ";
+			}
+			/*var propName = object.nombre;
+			for (var i = 0; i < object.valores.length; i++) {
+				var valorAtributo = object.valores[i];
+				console.log(valorAtributo);
+				dynamicCode += "setAtr_" + propName + "('" + valorAtributo + "'); "
+				+ "for (var i = 0; i < svg.children.length; i++) { "
+				+ "if(svg.children[i].id == 'circle-' + (i+1)){ "
+				//+ "console.log('circle-' + (i+1)); "
+				//+ "console.log(atr_" + propName + "); "
+				+ "svg.children[i].setAttribute('" + propName + "', " + 'atr_' + propName + "); "
+				+ "} "
+				+ "} ";
+			}*/
+		}		
 	}
-
-	console.log(dynamicCode);
-
 	return dynamicCode;
 }
 
-function prepareFunctions(){
-	for (var i = 0; i < attributosCirculos.length; i++) {
-		eval(writeFunctions(attributosCirculos[i].nombre));
-	}
-}
-
-function initFunction(){
-	prepareFunctions();
-	/*var dynamicCode = '';
-	for ( var j=0; j < arguments.length; j++ ) {
-		var circulo = arguments[j];
-		//dynamicCode = "set_" + circulo.nombre + "(" + circulo.valores + ");";
-		dynamicCode = "set_" + circulo.nombre + "(test);";
-	}
-	return dynamicCode;*/
-}
-
-function inicializarDatosCirculos()
-{
-	eval(initFunction());
-	/*for (var i = 0; i < attributosCirculos.length; i++) {
-		var atributosCirculo = attributosCirculos[i];
-		eval(initFunction(atributosCirculo));
-	}*/	
-}
-
-function limpiarCanvas()
+function initCanvas()
 {
 	jQuery('#graficos').append(svg);
 }
 
-/*function drawCircle()
-{
-	var circle_encontrado = false;
-	//manipular el canvas para verificar si ya se han generado los circulos por medio del identificador
+function set_cx(){
+	var radio = 0;
 	for (var i = 0; i < svg.children.length; i++) {
-		//si es encontrado el identificador dentro de los elementos en el canvas se modifican los atributos
-		if(svg.children[i].id == 'circle-' + id){
-			var circle_encontrado = true;
-			svg.children[i].setAttribute("r", atr_r);
-			svg.children[i].setAttribute("cx", atr_cx);
-			svg.children[i].setAttribute("fill", atr_fill);
-			svg.children[i].setAttribute("stroke", atr_stroke);
+		if(svg.children[i].getAttribute('class') == 'circle'){
+			radio += parseInt(svg.children[i].getAttribute("r"));
+			var cx = ((radio * 2) + 10);
+			svg.children[i].setAttribute('cx', cx);	
 		}
 	}
-
-	//si no se encuentran se crea un elemento circulo de svg
-	if(circle_encontrado == false){
-		var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-		circle.setAttribute("cy",100); 
-		circle.setAttribute("cx", atr_cx);
-		circle.setAttribute('stroke-width',3);
-		circle.setAttribute("r", atr_r);
-		circle.setAttribute("id", 'circle-' + id);
-		circle.setAttribute("fill", atr_fill);
-		circle.setAttribute("stroke", atr_stroke);
-		svg.appendChild(circle);	
-	}		
 }
 
-function setText()
-{
-	var text_encontrado = false;
-	//manipular el canvas para verificar si ya se han generado los circulos por medio del identificador
+function set_label(){
+	var label = '';
 	for (var i = 0; i < svg.children.length; i++) {
-		if(svg.children[i].id == 'text-' + id){
-			var text_encontrado = true;
-			svg.children[i].textContent = atr_label;
+		if(svg.children[i].getAttribute('class') == 'circle'){
+			label = svg.children[i].getAttribute('label');
+			cx = svg.children[i].getAttribute('cx');
+			svg.children[(i+1)].textContent = label;	
+			svg.children[(i+1)].setAttribute('x', cx);	
 		}
 	}
-
-	if(text_encontrado == false){
-		var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-		text.setAttribute("y",100); 
-		text.setAttribute("x", atr_cx);
-		text.setAttribute('font-family','sans-serif');
-		text.setAttribute("font-size", 20);
-		text.setAttribute("id", 'text-' + id);
-		text.setAttribute("text-achor", 'middle');
-		text.setAttribute("fill", 'black');
-		text.textContent = atr_label;
-		svg.appendChild(text);
-	}
-}*/
+}
