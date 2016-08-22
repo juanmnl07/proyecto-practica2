@@ -48,6 +48,7 @@ function initCircles(cantidadPersonas){
 	}
 }
 
+//funcion que permite crear las funciones SET de cada atributo de forma dinamica
 function addFunctions() {
 	var dynamicCode = '';
 	var object = {};
@@ -64,6 +65,7 @@ function addFunctions() {
 	return dynamicCode;
 }
 
+//funcion que se encarga de inicializar cada atributo ejecutando la funcion correspondiente, posteriormente se utliza la variable para asignar el atributo del circulo
 function initAttributes() {
 	var dynamicCode = '';
 	var object = {};
@@ -77,29 +79,18 @@ function initAttributes() {
 				dynamicCode += "setAtr_" + atributos.atributo + "('" + atributos.valor + "'); "
 				+ "svg.children[id='circle-" + object.id + "'].setAttribute('" + atributos.atributo + "', " + 'atr_' + atributos.atributo + "); ";
 			}
-			/*var propName = object.nombre;
-			for (var i = 0; i < object.valores.length; i++) {
-				var valorAtributo = object.valores[i];
-				console.log(valorAtributo);
-				dynamicCode += "setAtr_" + propName + "('" + valorAtributo + "'); "
-				+ "for (var i = 0; i < svg.children.length; i++) { "
-				+ "if(svg.children[i].id == 'circle-' + (i+1)){ "
-				//+ "console.log('circle-' + (i+1)); "
-				//+ "console.log(atr_" + propName + "); "
-				+ "svg.children[i].setAttribute('" + propName + "', " + 'atr_' + propName + "); "
-				+ "} "
-				+ "} ";
-			}*/
 		}		
 	}
 	return dynamicCode;
 }
 
+//permite inicializar el canvas donde se ubicaran los circulos
 function initCanvas()
 {
 	jQuery('#graficos').append(svg);
 }
 
+//asigna la posición sobre el eje x de cada circulo con base en el radio
 function set_cx(){
 	var radio = 0;
 	for (var i = 0; i < svg.children.length; i++) {
@@ -111,6 +102,7 @@ function set_cx(){
 	}
 }
 
+//permite asignar el label a cada circulo
 function set_label(){
 	var label = '';
 	for (var i = 0; i < svg.children.length; i++) {
