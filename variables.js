@@ -12,7 +12,9 @@ var atr_label = '';
 var atr_stroke = '';
 */
 
+//array global para almacenar los atributos de cada circulo, esta funcion se ejecuta desde main.js
 var atributosPersonas = [];
+
 function inicializarAtributosCirculos(personas, cantidadPersonas, funciones){
 	atributosPersonas = personas;
 	initCanvas();
@@ -23,6 +25,7 @@ function inicializarAtributosCirculos(personas, cantidadPersonas, funciones){
 	set_label();
 }
 
+//funcion para inicializar los circulos, contiene atributos preestablecidos
 function initCircles(cantidadPersonas){
 	for (var i = 1; i <= cantidadPersonas; i++) {
 		//******* circulos ******
