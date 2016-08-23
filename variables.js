@@ -30,6 +30,7 @@ function initCircles(cantidadPersonas){
 		circle.setAttribute("id", 'circle-' + i);
 		circle.setAttribute("class", 'circle');
 		circle.setAttribute("cy",100);
+		circle.setAttribute("fill","#fff");
 		svg.appendChild(circle);
 
 		//******* etiquetas *****
@@ -74,19 +75,6 @@ function initAttributes() {
 				dynamicCode += "setAtr_" + atributos.atributo + "('" + atributos.valor + "'); "
 				+ "svg.children[id='circle-" + object.id + "'].setAttribute('" + atributos.atributo + "', " + 'atr_' + atributos.atributo + "); ";
 			}
-			/*var propName = object.nombre;
-			for (var i = 0; i < object.valores.length; i++) {
-				var valorAtributo = object.valores[i];
-				console.log(valorAtributo);
-				dynamicCode += "setAtr_" + propName + "('" + valorAtributo + "'); "
-				+ "for (var i = 0; i < svg.children.length; i++) { "
-				+ "if(svg.children[i].id == 'circle-' + (i+1)){ "
-				//+ "console.log('circle-' + (i+1)); "
-				//+ "console.log(atr_" + propName + "); "
-				+ "svg.children[i].setAttribute('" + propName + "', " + 'atr_' + propName + "); "
-				+ "} "
-				+ "} ";
-			}*/
 		}		
 	}
 	return dynamicCode;

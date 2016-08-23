@@ -1,7 +1,10 @@
 (function($){
 
 	//****** GLOBALS ******
-	var asociaciones = {"asociaciones":[{}]}; //variable global para almacenar las asociaciones
+	var emptyA = {"asociaciones":[{}]};
+	var asociaciones = $.extend(true, {}, emptyA); //variable global para almacenar las asociaciones
+	var fields = [ "nombre", "genero", "edad", "salario" ];
+
 	var globalData = []; //almacenar en una variable global todos los datos de las personas
 	var colores = [{'hombre':'#2E9AFE'},{'mujer':'#F781F3'}];
 	var coloresStroke = [{'hombre':'#0040FF'},{'mujer':'#FF00FF'}];
@@ -135,9 +138,45 @@
 		$("#dibujar-graficos").on("click", function(event){
 			event.preventDefault;
 			crearDatosCirculos();
+			//inicializarDatosCirculos();
+			//console.log(JSON.stringify(asociaciones));
+
+			var missingFields = [];
+			$.each(fields, function( index, value ) {console.log(value);
+				var isFieldFound = false;
+				var fieldName = value;
+				$.each(asociaciones["asociaciones"], function( index, value ) {
+					var kvObj = value;
+					if ( kvObj[fieldName] != undefined && kvObj[fieldName].length != 0 ) {
+						isFieldFound = true;
+						return false; // exit the loop
+					}
+				});
+				if ( isFieldFound ) {
+					isFieldFound = false;
+					return; // to next field name
+				}
+				isFieldFound = false;
+				missingFields.push(fieldName);
+			});console.log( missingFields );
+			if ( missingFields.length > 0 ) {
+				window.alert("Missing fields: " + missingFields.join(", ") );
+				return;
+			}
+
 			/*limpiarCanvas();
 			printGraphAndAssociations();*/
 		});
+
+		$("#resetear-graficos").on("click", function(event){
+			$("#graficos > svg").children().remove();
+			$(".active").removeClass("active");
+			$(".disabled").removeClass("disabled");
+			$(".last-selected").removeClass("last-selected");
+			$('#messages .alert').remove();
+			asociaciones = $.extend(true, {}, emptyA);
+		});
+
 
 		//funcion para llenar todos los atrributos de los circulos en un array
 		function crearDatosCirculos(){
