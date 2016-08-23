@@ -103,6 +103,7 @@
 						,"salario" : [ "atr_fill", "atr_stroke" ]
 					};
 					if ( -1 != $.inArray(valSelected, disallowed[keySelected] ) ) {
+						//si se ha seleccionado valor:variable que no es permitida se desplegara un mensaje
 						$('#messages').append('<div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>¡Alerta!</strong> No puedes representar '  + keySelected + ' as ' + valSelected + ', por favor selecciona otro valor</div>')
 					} else {
 						$(this).addClass("active");
@@ -125,7 +126,7 @@
 						$.each(asociaciones, function(k2, v2){
 							$.each(v2, function(k3, v3){
 								$.each(v3, function(k4, v4){									
-									$('#assoc table tbody').append('<tr><td>' + k4 + '</td><td>' + v4 + '</td></tr>');
+									$('#assoc table tbody').append('<tr><td>' + k4 + '</td><td>' + v4 + '</td></tr>'); //asignar la asociacion en la tabla correspondiente
 								});
 							});
 						})

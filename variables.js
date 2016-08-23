@@ -12,7 +12,9 @@ var atr_label = '';
 var atr_stroke = '';
 */
 
+//array global para almacenar los atributos de cada circulo, esta funcion se ejecuta desde main.js
 var atributosPersonas = [];
+
 function inicializarAtributosCirculos(personas, cantidadPersonas, funciones){
 	atributosPersonas = personas;
 	initCanvas();
@@ -23,6 +25,7 @@ function inicializarAtributosCirculos(personas, cantidadPersonas, funciones){
 	set_label();
 }
 
+//funcion para inicializar los circulos, contiene atributos preestablecidos
 function initCircles(cantidadPersonas){
 	for (var i = 1; i <= cantidadPersonas; i++) {
 		//******* circulos ******
@@ -46,6 +49,7 @@ function initCircles(cantidadPersonas){
 	}
 }
 
+//funcion que permite crear las funciones SET de cada atributo de forma dinamica
 function addFunctions() {
 	var dynamicCode = '';
 	var object = {};
@@ -62,6 +66,7 @@ function addFunctions() {
 	return dynamicCode;
 }
 
+//funcion que se encarga de inicializar cada atributo ejecutando la funcion correspondiente, posteriormente se utliza la variable para asignar el atributo del circulo
 function initAttributes() {
 	var dynamicCode = '';
 	var object = {};
@@ -80,11 +85,13 @@ function initAttributes() {
 	return dynamicCode;
 }
 
+//permite inicializar el canvas donde se ubicaran los circulos
 function initCanvas()
 {
 	jQuery('#graficos').append(svg);
 }
 
+//asigna la posición sobre el eje x de cada circulo con base en el radio
 function set_cx(){
 	var radio = 0;
 	for (var i = 0; i < svg.children.length; i++) {
@@ -96,6 +103,7 @@ function set_cx(){
 	}
 }
 
+//permite asignar el label a cada circulo
 function set_label(){
 	var label = '';
 	for (var i = 0; i < svg.children.length; i++) {
